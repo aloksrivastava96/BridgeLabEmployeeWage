@@ -33,11 +33,12 @@ function empMain() {
                 isFullTime=$((RANDOM%2))
 		EMP_DAY_HR=$( getWorkingHr $isFullTime )
 		totalEmpHr=$(( $totalEmpHr + $EMP_DAY_HR ))
-		dailyWage[$totalWorkDay]=$(( $EMP_DAY_HR*$EMP_WAGE_PER_HR ))
+		dailyWage["Day $totalWorkDay"]=$(( $EMP_DAY_HR*$EMP_WAGE_PER_HR ))
 		((totalWorkDay++))
         done
 	totalWage=$(($totalEmpHr*$EMP_WAGE_PER_HR))
 	echo "Total Working Hour for this month is:"$totalEmpHr
+	echo "Days of the month are:"${!dailyWage[@]}
 	echo "Daily wage of a employee are:"${dailyWage[@]}
 	echo "Total wage of a employee for this month is:"$totalWage
 }
