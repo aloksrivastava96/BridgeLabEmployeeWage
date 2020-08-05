@@ -4,11 +4,6 @@ function attendanceCheck() {
 	echo $((RANDOM%2))
 }
 
-function getDailyEmpWage() {
-	dailyWage[$totalWorkDay]=$(( $EMP_DAY_HR*$EMP_WAGE_PER_HR ))
-	echo ${dailyWage[totalWorkDay]}
-}
-
 function getWorkingHr() {
 	attendance=$( attendanceCheck )
 	case $isFullTime in
@@ -31,16 +26,19 @@ function empMain() {
 
 	totalEmpHr=0
 	totalWorkDay=0
+
+	declare -A dailyWage
 	while [[ $totalEmpHr -lt $MAX_MONTH_HR && $totalWorkDay -lt $NO_OF_WORK_DAY ]]
         do
                 isFullTime=$((RANDOM%2))
 		EMP_DAY_HR=$( getWorkingHr $isFullTime )
 		totalEmpHr=$(( $totalEmpHr + $EMP_DAY_HR ))
-                echo "Emp Wage for this day is:"$( getDailyEmpWage $totalWorkDay $EMP_DAY_HR $EMP_WAGE_PER_HR )
+		dailyWage[$totalWorkDay]=$(( $EMP_DAY_HR*$EMP_WAGE_PER_HR ))
 		((totalWorkDay++))
         done
 	totalWage=$(($totalEmpHr*$EMP_WAGE_PER_HR))
 	echo "Total Working Hour for this month is:"$totalEmpHr
+	echo "Daily wage of a employee are:"${dailyWage[@]}
 	echo "Total wage of a employee for this month is:"$totalWage
 }
 echo "Welcome to Employee Wage Computation Program"
